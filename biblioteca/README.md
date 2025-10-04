@@ -278,6 +278,167 @@ Se você executou `populate_data.py`:
 
 ---
 
+## 🐳 Executar com Docker (Recomendado)
+
+### ✅ Imagem Publicada no Docker Hub
+
+**Link**: https://hub.docker.com/r/felipekhouri/biblioteca-online
+
+### 🚀 Uso Rápido
+
+```bash
+# Baixar e executar
+docker pull felipekhouri/biblioteca-online:latest
+docker run -p 8000:8000 felipekhouri/biblioteca-online:latest
+```
+
+Acesse: **http://localhost:8000**
+
+---
+
+## 🔑 Credenciais para Teste
+
+A imagem Docker **já vem com dados pré-carregados**. Use estas credenciais:
+
+### 👥 Contas Disponíveis
+
+| Tipo | Username | Senha | O que pode fazer |
+|------|----------|-------|------------------|
+| **🔧 Bibliotecário** | `bibliotecario1` | `senha123` | ✅ **USAR ESTA** - CRUD completo de livros/autores |
+| **📖 Leitor** | `leitor1` | `senha123` | Emprestar e devolver livros |
+| **👑 Admin** | `admin` | `admin123` | Acesso ao Django Admin (`/admin`) |
+
+### 📚 Dados Incluídos
+
+- ✅ 5 autores brasileiros (Machado de Assis, Clarice Lispector, Jorge Amado, Paulo Coelho, Guimarães Rosa)
+- ✅ 6 livros clássicos da literatura brasileira
+- ✅ 1 empréstimo ativo de exemplo
+- ✅ Grupos configurados (leitores e bibliotecarios)
+
+### 🧪 Como Testar como Bibliotecário
+
+1. Acesse: `http://localhost:8000`
+2. Clique em **"Entrar"**
+3. Username: `bibliotecario1`
+4. Senha: `senha123`
+5. ✅ Agora você pode:
+   - Cadastrar livros (Menu → "Cadastrar Livro")
+   - Cadastrar autores (Menu → "Cadastrar Autor")
+   - Editar/Excluir livros
+   - Ver todos os empréstimos do sistema
+
+---
+
+## 📖 Como Usar o Site
+
+### 1️⃣ Primeiro Acesso (Criar Conta)
+
+1. Acesse `http://localhost:8000`
+2. Clique em **"Cadastrar"**
+3. Preencha: username, e-mail e senha
+4. Você será automaticamente logado como **leitor**
+
+### 2️⃣ Como Leitor
+
+**Ver Livros:**
+- Menu → **"Livros"**
+- Use filtros (categoria, disponibilidade)
+- Clique em **"Ver Detalhes"**
+
+**Emprestar Livro:**
+- Na página do livro → **"Emprestar"** (se disponível)
+- Selecione data de devolução → Confirmar
+
+**Devolver Livro:**
+- Menu → **"Meus Empréstimos"**
+- Clique em **"Devolver"** → Confirmar
+
+### 3️⃣ Como Bibliotecário
+
+Use a conta: `bibliotecario1` / `senha123`
+
+**Funcionalidades Extras:**
+- **Cadastrar Livro**: Menu → "Cadastrar Livro" → Preencher 8 campos
+- **Cadastrar Autor**: Menu → "Cadastrar Autor" → Nome + biografia
+- **Editar/Excluir**: Na página do livro → Botões "Editar"/"Excluir"
+- **Todos Empréstimos**: Menu → "Todos Empréstimos" (vê todos os usuários)
+
+---
+
+## 🖥️ Como Executar Localmente (Desenvolvimento)
+
+### Pré-requisitos
+- Python 3.9+ ou Conda
+- Git
+
+### Instalação Rápida
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/felipekhouri/INF1407-P1.git
+cd INF1407-P1/biblioteca
+
+# 2. Crie ambiente virtual
+conda create -n biblioteca_env python=3.13 -y
+conda activate biblioteca_env
+
+# 3. Instale dependências
+pip install -r requirements.txt
+
+# 4. Configure banco e grupos
+python manage.py migrate
+python manage.py shell -c "from django.contrib.auth.models import Group; Group.objects.get_or_create(name='leitores'); Group.objects.get_or_create(name='bibliotecarios')"
+
+# 5. Popular com dados de teste
+python manage.py shell < populate_data.py
+
+# 6. Inicie servidor
+python manage.py runserver
+```
+
+Acesse: `http://localhost:8000`
+
+---
+
+## 📋 Conformidade com Enunciado INF1407
+
+| Requisito | Status |
+|-----------|--------|
+| Python + Django + HTML + CSS | ✅ |
+| **Sem JavaScript** | ✅ |
+| CRUD completo | ✅ |
+| **Publicação Docker** | ✅ **PUBLICADO** |
+| Git + Repositório público | ✅ |
+| Login + Acesso por usuário | ✅ |
+| Visões diferentes | ✅ |
+| README com nomes | ✅ |
+| README com escopo | ✅ |
+| README com "o que funcionou" | ✅ |
+| README com "o que não funcionou" | ✅ |
+| README com manual de uso | ✅ |
+
+**Links de Entrega**:
+- 🐳 **Docker Hub**: https://hub.docker.com/r/felipekhouri/biblioteca-online
+- 📦 **GitHub**: https://github.com/felipekhouri/INF1407-P1
+
+**Estatísticas**:
+- ~2.565 linhas de código
+- 3 modelos Django
+- 15 views
+- 16 templates HTML
+- Zero linhas de JavaScript
+```
+
+Acesse: `http://localhost:8000`
+
+---
+
+---
+
+## 🖥️ Como Executar Localmente (Desenvolvimento)
+
+---
+
 ## � Deploy em Produção
 
 ### Opção 1: Docker Hub

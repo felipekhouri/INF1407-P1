@@ -23,8 +23,14 @@ RUN python manage.py collectstatic --no-input
 # Executar migrations ANTES de criar grupos
 RUN python manage.py migrate
 
-# AGORA sim criar grupos (depois das migrations)
+# Criar grupos
 RUN python manage.py shell -c "from django.contrib.auth.models import Group; Group.objects.get_or_create(name='leitores'); Group.objects.get_or_create(name='bibliotecarios')"
+
+# Criar superuser padrão (para facilitar testes)
+RUN python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@biblioteca.com', 'admin123') if not User.objects.filter(username='admin').exists() else None"
+
+# Popular dados de exemplo SEMPRE (garante credenciais de teste)
+RUN python manage.py shell < populate_data.py
 
 # Expor porta
 EXPOSE 8000
