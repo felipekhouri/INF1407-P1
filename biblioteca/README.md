@@ -81,7 +81,7 @@ A Biblioteca Online é um sistema web que permite o gerenciamento completo de um
 1. **Clone o repositório**
 ```bash
 git clone <url-do-repositorio>
-cd desafio_biblioteca
+cd biblioteca
 ```
 
 2. **Crie e ative o ambiente virtual**
@@ -247,7 +247,7 @@ Para ter acesso de bibliotecário, o administrador deve:
 ## 🗂️ Estrutura do Projeto
 
 ```
-desafio_biblioteca/
+biblioteca/
 ├── biblioteca/           # Configurações do projeto
 │   ├── settings.py       # Configurações principais
 │   ├── urls.py           # URLs principais
