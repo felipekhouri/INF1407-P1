@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden
 from .models import Livro, Autor, Emprestimo
 from .forms import LivroForm, AutorForm, EmprestimoForm
 
@@ -9,6 +10,18 @@ from .forms import LivroForm, AutorForm, EmprestimoForm
 def is_bibliotecario(user):
     """Verifica se o usuário pertence ao grupo bibliotecarios"""
     return user.groups.filter(name='bibliotecarios').exists()
+
+
+def bibliotecario_required(view_func):
+    """Decorator que verifica se o usuário é bibliotecário"""
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('contas:login')
+        if not is_bibliotecario(request.user):
+            messages.error(request, 'Você não tem permissão para acessar esta página. Apenas bibliotecários podem realizar esta ação.')
+            return redirect('catalogo:home')
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 
 def home(request):
@@ -54,7 +67,7 @@ def livro_detail(request, pk):
 
 
 @login_required
-@user_passes_test(is_bibliotecario)
+@bibliotecario_required
 def livro_create(request):
     """Criar novo livro - apenas bibliotecários"""
     if request.method == 'POST':
@@ -71,7 +84,7 @@ def livro_create(request):
 
 
 @login_required
-@user_passes_test(is_bibliotecario)
+@bibliotecario_required
 def livro_edit(request, pk):
     """Editar livro - apenas bibliotecários"""
     livro = get_object_or_404(Livro, pk=pk)
@@ -90,7 +103,7 @@ def livro_edit(request, pk):
 
 
 @login_required
-@user_passes_test(is_bibliotecario)
+@bibliotecario_required
 def livro_delete(request, pk):
     """Excluir livro - apenas bibliotecários"""
     livro = get_object_or_404(Livro, pk=pk)
@@ -149,7 +162,7 @@ def emprestimo_finalizar(request, pk):
 
 
 @login_required
-@user_passes_test(is_bibliotecario)
+@bibliotecario_required
 def todos_emprestimos(request):
     """Lista todos os empréstimos - apenas bibliotecários"""
     emprestimos = Emprestimo.objects.select_related('livro', 'livro__autor', 'usuario').all()
@@ -166,7 +179,7 @@ def todos_emprestimos(request):
 
 
 @login_required
-@user_passes_test(is_bibliotecario)
+@bibliotecario_required
 def autor_create(request):
     """Criar autor - apenas bibliotecários"""
     if request.method == 'POST':
