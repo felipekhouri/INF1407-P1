@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Biblioteca Online{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="{% url 'catalogo:home' %}" class="logo">📚 Biblioteca Online</a>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'catalogo:livros_list' %}">Livros</a></li>
+                    <li><a href="{% url 'catalogo:meus_emprestimos' %}">Meus Empréstimos</a></li>
+
+                    {% if user.groups.all.0.name == 'bibliotecarios' or user.is_superuser %}
+                        <li><a href="{% url 'catalogo:livro_create' %}">Cadastrar Livro</a></li>
+                        <li><a href="{% url 'catalogo:autor_create' %}">Cadastrar Autor</a></li>
+                        <li><a href="{% url 'catalogo:todos_emprestimos' %}">Todos Empréstimos</a></li>
+                        <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
+
+                    <li>Olá, {{ user.username }}</li>
+                    <li><a href="{% url 'contas:logout' %}">Sair</a></li>
+                {% else %}
+                    <li><a href="{% url 'contas:login' %}">Entrar</a></li>
+                    <li><a href="{% url 'contas:signup' %}">Cadastrar</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Biblioteca Online | Projeto INF1407</p>
+        </div>
+    </footer>
+</body>
+</html>

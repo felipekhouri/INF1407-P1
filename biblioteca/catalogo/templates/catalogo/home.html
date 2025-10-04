@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Bem-vindo à Biblioteca Online</h1>
+    <p>Explore nosso acervo e faça empréstimos de livros</p>
+    {% if not user.is_authenticated %}
+        <div style="margin-top: 2rem;">
+            <a href="{% url 'contas:login' %}" class="btn btn-primary">Entrar</a>
+            <a href="{% url 'contas:signup' %}" class="btn btn-success">Criar Conta</a>
+        </div>
+    {% else %}
+        <div style="margin-top: 2rem;">
+            <a href="{% url 'catalogo:livros_list' %}" class="btn btn-primary">Ver Acervo</a>
+            <a href="{% url 'catalogo:emprestimo_create' %}" class="btn btn-success">Novo Empréstimo</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Últimos Livros Adicionados</h2>
+    {% if livros_recentes %}
+        <div class="livros-grid">
+            {% for livro in livros_recentes %}
+                <div class="livro-card">
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                    {% else %}
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='300'%3E%3Crect fill='%23ddd' width='250' height='300'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3ESem Capa%3C/text%3E%3C/svg%3E" alt="Sem capa">
+                    {% endif %}
+                    <h3>{{ livro.titulo }}</h3>
+                    <p><strong>Autor:</strong> {{ livro.autor.nome }}</p>
+                    <p><strong>Categoria:</strong> {{ livro.get_categoria_display }}</p>
+                    <span class="badge {% if livro.disponibilidade %}disponivel{% else %}indisponivel{% endif %}">
+                        {% if livro.disponibilidade %}Disponível{% else %}Emprestado{% endif %}
+                    </span>
+                    {% if user.is_authenticated %}
+                        <div style="margin-top: 1rem;">
+                            <a href="{% url 'catalogo:livro_detail' livro.pk %}" class="btn btn-primary">Ver Detalhes</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhum livro cadastrado ainda.</p>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated %}
+<div class="card">
+    <h2>Como Funciona</h2>
+    <ul>
+        <li><strong>Leitores:</strong> Navegue pelo acervo, veja detalhes dos livros e faça empréstimos online. Gerencie seus empréstimos ativos.</li>
+        <li><strong>Bibliotecários:</strong> Além das funcionalidades de leitor, você pode cadastrar, editar e excluir livros e autores, e gerenciar todos os empréstimos.</li>
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

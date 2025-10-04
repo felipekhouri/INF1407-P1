@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Livros - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Acervo de Livros</h2>
+
+    <form method="get" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div>
+                <label for="categoria">Categoria:</label>
+                <select name="categoria" id="categoria" class="form-control">
+                    <option value="">Todas</option>
+                    {% for value, label in categorias %}
+                        <option value="{{ value }}" {% if request.GET.categoria == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="disponivel">Disponibilidade:</label>
+                <select name="disponivel" id="disponivel" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="sim" {% if request.GET.disponivel == 'sim' %}selected{% endif %}>Disponíveis</option>
+                    <option value="nao" {% if request.GET.disponivel == 'nao' %}selected{% endif %}>Emprestados</option>
+                </select>
+            </div>
+            <div style="align-self: flex-end;">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'catalogo:livros_list' %}" class="btn btn-secondary">Limpar</a>
+            </div>
+        </div>
+    </form>
+
+    {% if livros %}
+        <div class="livros-grid">
+            {% for livro in livros %}
+                <div class="livro-card">
+                    {% if livro.capa %}
+                        <img src="{{ livro.capa.url }}" alt="{{ livro.titulo }}">
+                    {% else %}
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='300'%3E%3Crect fill='%23ddd' width='250' height='300'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20'%3ESem Capa%3C/text%3E%3C/svg%3E" alt="Sem capa">
+                    {% endif %}
+                    <h3>{{ livro.titulo }}</h3>
+                    <p><strong>Autor:</strong> {{ livro.autor.nome }}</p>
+                    <p><strong>Categoria:</strong> {{ livro.get_categoria_display }}</p>
+                    <p><strong>Ano:</strong> {{ livro.ano_publicacao }}</p>
+                    <span class="badge {% if livro.disponibilidade %}disponivel{% else %}indisponivel{% endif %}">
+                        {% if livro.disponibilidade %}Disponível{% else %}Emprestado{% endif %}
+                    </span>
+                    <div style="margin-top: 1rem;">
+                        <a href="{% url 'catalogo:livro_detail' livro.pk %}" class="btn btn-primary">Ver Detalhes</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhum livro encontrado com os filtros selecionados.</p>
+    {% endif %}
+</div>
+{% endblock %}

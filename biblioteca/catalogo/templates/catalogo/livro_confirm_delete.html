@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Livro - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Confirmar Exclusão</h2>
+
+    <p>Tem certeza que deseja excluir o livro <strong>"{{ livro.titulo }}"</strong> de {{ livro.autor.nome }}?</p>
+    <p style="color: #dc3545;"><strong>Esta ação não pode ser desfeita!</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn-group">
+            <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+            <a href="{% url 'catalogo:livro_detail' livro.pk %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

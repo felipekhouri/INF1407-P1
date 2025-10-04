@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus Empréstimos - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Meus Empréstimos</h2>
+
+    {% if emprestimos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Livro</th>
+                    <th>Autor</th>
+                    <th>Data Início</th>
+                    <th>Previsão Devolução</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'catalogo:livro_detail' emprestimo.livro.pk %}">
+                                {{ emprestimo.livro.titulo }}
+                            </a>
+                        </td>
+                        <td>{{ emprestimo.livro.autor.nome }}</td>
+                        <td>{{ emprestimo.data_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ emprestimo.data_fim_prevista|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if emprestimo.status == 'ativo' %}
+                                <span class="badge disponivel">Ativo</span>
+                            {% else %}
+                                <span class="badge indisponivel">Finalizado</span>
+                                {% if emprestimo.data_fim_real %}
+                                    ({{ emprestimo.data_fim_real|date:"d/m/Y" }})
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if emprestimo.status == 'ativo' %}
+                                <a href="{% url 'catalogo:emprestimo_finalizar' emprestimo.pk %}" class="btn btn-success">Devolver</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Você não possui empréstimos no momento.</p>
+        <a href="{% url 'catalogo:livros_list' %}" class="btn btn-primary">Ver Livros Disponíveis</a>
+    {% endif %}
+</div>
+{% endblock %}

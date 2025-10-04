@@ -1,0 +1,111 @@
+# Sistema / IDE
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.orig
+.idea/
+.vscode/
+*.iml
+
+# Dependências
+node_modules/
+bower_components/
+jspm_packages/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Arquivos de ambiente (mantenha apenas exemplos)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+!.env.*.example
+!.env.sample
+
+# Build / artefatos de ferramentas
+dist/
+build/
+out/
+tmp/
+.temp/
+.tmp/
+.cache/
+.parcel-cache/
+.nyc_output/
+coverage/
+lib/
+.eslintcache
+.stylelintcache
+
+# Frameworks e bundlers
+.next/
+.vercel/
+.nuxt/
+.svelte-kit/
+.vite/
+.storybook/
+storybook-static/
+.angular/
+.cache-loader/
+
+# Testes e reports
+cypress/screenshots/
+cypress/videos/
+.cypress/
+playwright-report/
+test-results/
+reports/
+
+# TypeScript
+*.tsbuildinfo
+
+# Imagens geradas e outros
+*.tgz
+*.zip
+
+reference/
+ENUNCIADO.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/

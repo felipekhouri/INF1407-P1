@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrar - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 2rem auto;">
+    <h2>Entrar</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+    </form>
+
+    <p style="margin-top: 1rem;">
+        Não tem conta? <a href="{% url 'contas:signup' %}">Cadastre-se</a><br>
+        Esqueceu a senha? <a href="{% url 'contas:password_reset' %}">Recuperar senha</a>
+    </p>
+</div>
+{% endblock %}

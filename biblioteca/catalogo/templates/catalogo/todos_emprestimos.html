@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Todos Empréstimos - Biblioteca Online{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Gerenciar Todos os Empréstimos</h2>
+
+    <form method="get" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 1rem;">
+            <div>
+                <label for="status">Status:</label>
+                <select name="status" id="status" class="form-control">
+                    <option value="">Todos</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="align-self: flex-end;">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'catalogo:todos_emprestimos' %}" class="btn btn-secondary">Limpar</a>
+            </div>
+        </div>
+    </form>
+
+    {% if emprestimos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Livro</th>
+                    <th>Usuário</th>
+                    <th>Data Início</th>
+                    <th>Previsão Devolução</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'catalogo:livro_detail' emprestimo.livro.pk %}">
+                                {{ emprestimo.livro.titulo }}
+                            </a>
+                        </td>
+                        <td>{{ emprestimo.usuario.username }}</td>
+                        <td>{{ emprestimo.data_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ emprestimo.data_fim_prevista|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if emprestimo.status == 'ativo' %}
+                                <span class="badge disponivel">Ativo</span>
+                            {% else %}
+                                <span class="badge indisponivel">Finalizado</span>
+                                {% if emprestimo.data_fim_real %}
+                                    ({{ emprestimo.data_fim_real|date:"d/m/Y" }})
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if emprestimo.status == 'ativo' %}
+                                <a href="{% url 'catalogo:emprestimo_finalizar' emprestimo.pk %}" class="btn btn-success">Finalizar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum empréstimo encontrado com os filtros selecionados.</p>
+    {% endif %}
+</div>
+{% endblock %}
