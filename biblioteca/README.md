@@ -8,8 +8,88 @@ Sistema de gerenciamento de biblioteca desenvolvido em Django 4.2 LTS para a dis
 
 ---
 
-## 📋 Escopo do Projeto
+## 📋 Escopo do Proje- 5 autores brasileiros (Machado de Assis, Clarice Lispector, etc.)
+- 6 livros clássicos da lit## 📋 Conformidade com Enunciado
 
+| Requisito | Status |
+|-----------|--------|
+| Python + Django + HTML + CSS | ✅ |
+| **Sem JavaScript** | ✅ |
+| CRUD completo | ✅ |
+| **Publicação Docker** | ✅ **PUBLICADO** |
+| Git + Repositório público | ✅ |
+| Login + Acesso por usuário | ✅ |
+| Visões diferentes | ✅ |
+| README com nomes | ✅ |
+| README com escopo | ✅ |
+| README com "o que funcionou" | ✅ |
+| README com "o que não funcionou" | ✅ |
+| README com manual de uso | ✅ |
+
+**Links de Entrega**:
+- 🐳 **Docker Hub**: https://hub.docker.com/r/felipekhouri/biblioteca-online
+- 📦 **GitHub**: https://github.com/felipekhouri/INF1407-P1
+
+**Estatísticas**:
+- 1 empréstimo ativo de exemplo
+
+---
+
+## 🐳 Executar com Docker
+
+### ✅ Imagem Publicada no Docker Hub
+
+**Link da imagem**: https://hub.docker.com/r/felipekhouri/biblioteca-online
+
+### Método 1: Usar imagem pronta (Recomendado)
+
+```bash
+# Baixar e executar a imagem
+docker pull felipekhouri/biblioteca-online:latest
+docker run -p 8000:8000 felipekhouri/biblioteca-online:latest
+```
+
+Acesse: `http://localhost:8000`
+
+**Criar um superusuário no container**:
+```bash
+# Descubra o ID do container
+docker ps
+
+# Execute o comando dentro do container
+docker exec -it <container_id> python manage.py createsuperuser
+```
+
+**Popular com dados de teste**:
+```bash
+docker exec -it <container_id> python manage.py shell < populate_data.py
+```
+
+### Método 2: Build local
+
+```bash
+git clone https://github.com/felipekhouri/INF1407-P1.git
+cd INF1407-P1/biblioteca
+docker build -t biblioteca-online .
+docker run -p 8000:8000 biblioteca-online
+```
+
+---
+
+## 🌐 Outras Opções de Deploy
+
+### Render.com (Grátis)
+1. Conecte repositório GitHub
+2. Build: `pip install -r requirements.txt && python manage.py migrate`
+3. Start: `gunicorn biblioteca.wsgi`
+4. Variáveis: `SECRET_KEY`, `ALLOWED_HOSTS`, `DEBUG=False`
+
+### Railway
+1. Conecte GitHub
+2. Railway detecta Django automaticamente
+3. Configure variáveis de ambiente
+
+**Arquivos incluídos**: `Dockerfile`, `build.sh`, `requirements.txt`, `.dockerignore`
 Sistema web para gerenciamento de acervo de biblioteca com **dois níveis de acesso**:
 
 ### 👤 Leitores
@@ -228,7 +308,7 @@ docker run -p 8000:8000 seu-usuario/biblioteca-online:latest
 
 ---
 
-## � Conformidade com Enunciado INF1407
+## Conformidade com Enunciado
 
 | Requisito | Status |
 |-----------|--------|
@@ -251,16 +331,3 @@ docker run -p 8000:8000 seu-usuario/biblioteca-online:latest
 - 15 views
 - 16 templates HTML
 - Zero linhas de JavaScript
-
----
-
-## 📞 Contato
-
-- **Aluno**: Felipe Khouri Gameleira
-- **Disciplina**: INF1407 - Programação Web
-- **Instituição**: PUC-Rio
-- **Período**: 2025.2
-
----
-
-**© 2025 Biblioteca Online | Projeto INF1407 - PUC**
